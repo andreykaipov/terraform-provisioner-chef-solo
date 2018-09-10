@@ -18,14 +18,14 @@ var osDefaults = map[string]provisioner{
 		PreventSudo:      false,
 		StagingDirectory: "/tmp/terraform-chef-solo",
 		InstallCommand:   "sh -c 'command -v chef-solo || (curl -LO https://omnitruck.chef.io/install.sh && sh install.sh{{if .Version}} -v {{.Version}}{{end}})'",
-		ExecuteCommand:   "chef-solo --no-color -c {{.StagingDirectory}}/solo.rb -j {{.StagingDirectory}}/attributes.json",
+		ExecuteCommand:   "chef-solo --no-color -c {{.StagingDirectory}}/solo.rb -j {{.StagingDirectory}}/attributes.json -L {{.StagingDirectory}}/chef.log",
 		createDirCommand: "sh -c 'mkdir -p %q; chmod 777 %q'",
 	},
 	"windows": {
 		PreventSudo:      true,
 		StagingDirectory: "C:/Windows/Temp/packer-chef-solo",
 		InstallCommand:   "powershell.exe -Command \". { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; Install-Project{{if .Version}} -version {{.Version}}{{end}}\"",
-		ExecuteCommand:   "C:/opscode/chef/bin/chef-solo.bat --no-color -c {{.StagingDirectory}}/solo.rb -j {{.StagingDirectory}}/attributes.json",
+		ExecuteCommand:   "C:/opscode/chef/bin/chef-solo.bat --no-color -c {{.StagingDirectory}}/solo.rb -j {{.StagingDirectory}}/attributes.json -L {{.StagingDirectory}}/chef.log",
 		createDirCommand: "cmd /c if not exist %q mkdir %q",
 	},
 }
