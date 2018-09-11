@@ -104,6 +104,10 @@ func (p *provisioner) createDir(o terraform.UIOutput, comm communicator.Communic
 }
 
 func (p *provisioner) uploadDir(o terraform.UIOutput, comm communicator.Communicator, dst string, src string) error {
+	if src == "" {
+		return nil
+	}
+
 	if err := p.createDir(o, comm, dst); err != nil {
 		return err
 	}
@@ -114,10 +118,23 @@ func (p *provisioner) uploadDir(o terraform.UIOutput, comm communicator.Communic
 	return comm.UploadDir(dst, src)
 }
 
+func (p *provisioner) uploadFile(o terraform.UIOutput, comm communicator.Communicator, dst string, src string) error {
+	if src == "" {
+		return nil
+	}
+	f, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	return comm.Upload(dst, f)
+}
+
 // runCommand is used to run already prepared commands
 func (p *provisioner) runCommand(o terraform.UIOutput, comm communicator.Communicator, command string) error {
 	// Unless prevented, prefix the command with sudo
-	if !p.PreventSudo {
+	if !p.PreventSudo && p.GuestOSType == "unix" {
 		command = "sudo " + command
 	}
 
