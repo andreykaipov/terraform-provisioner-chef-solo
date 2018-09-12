@@ -66,8 +66,8 @@ resource "aws_instance" "web" {
 
   provisioner "chef-solo" {
     version         = "12"
-	cookbook_paths  = ["cookbooks"]
-	run_list        = ["book::recipe"]
+    cookbook_paths  = ["cookbooks"]
+    run_list        = ["book::recipe"]
     json            = "${data.template_file.web_attributes.rendered}"
   }
 }
@@ -170,7 +170,8 @@ Unless otherwise specified, the default values of all the options are empty.
 ## Chef Configuration
 
 By default, Terraform creates a simple Chef "solo.rb" configuration file in order to
-set the options specified by the provisioner. If you'd like to set your own custom configurations not supported above and don't want to submit a feature request, you
+set the options specified by the provisioner. If you'd like to set your own custom
+configurations not supported above and don't want to submit a feature request, you
 can always specify a different configuration template through the `config_template`
 setting. However, if you found it useful, then someone else might too! So please do
 submit those requests!
@@ -193,8 +194,10 @@ available to use. All of them take the value of the correspondingly named config
 In addition to the above variables, we have the following variables that do not match
 any configuration settings.
 
--   `JSONPath` - The path to where the JSON attributes file is. This has the value of "{{.StagingDirectory}}/attributes.json".
--   `LogPath` - The path to where the log file is stored. This has the value of "{{.StagingDirectory}}/chef.log".
+-   `JSONPath` - The path to where the JSON attributes file is.
+     This has the value of "{{.StagingDirectory}}/attributes.json".
+-   `LogPath` - The path to where the log file is stored.
+     This has the value of "{{.StagingDirectory}}/chef.log".
 
 ### How do I use any of this?
 
@@ -230,6 +233,8 @@ By default, Terraform uses the following command to execute Chef for UNIX system
 chef-solo --no-color -c {{.ConfigPath}}
 ```
 
+When `prevent_sudo` is false, the above command is prefaced with sudo.
+
 And the following for Windows systems:
 
 ```liquid
@@ -248,6 +253,8 @@ By default, Terraform uses the following command to execute Chef for UNIX system
 sh -c 'command -v chef-solo || (curl -LO https://omnitruck.chef.io/install.sh && sh install.sh{{if .Version}} -v {{.Version}}{{end}})'
 ```
 
+When `prevent_sudo` is false, the above command is prefaced with sudo.
+
 And the following for Windows systems:
 
 ```liquid
@@ -255,5 +262,5 @@ powershell.exe -Command \". { iwr -useb https://omnitruck.chef.io/install.ps1 } 
 ```
 
 Similarly, you can change this through the `install_command` setting. The only
-template variable available to you here is "{{.Version}}` which evaluates to whatever
+template variable available to you here is "{{.Version}}" which evaluates to whatever
 the `version` setting is.
