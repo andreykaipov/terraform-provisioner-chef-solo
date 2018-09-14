@@ -21,7 +21,7 @@ var osDefaults = map[string]provisioner{
 		createDirCommand: "sh -c 'mkdir -p %q; chmod 777 %q'",
 	},
 	"windows": {
-		StagingDirectory: "C:/Windows/Temp/packer-chef-solo",
+		StagingDirectory: "C:/Windows/Temp/terraform-chef-solo",
 		InstallCommand:   "powershell.exe -Command \". { iwr -useb https://omnitruck.chef.io/install.ps1 } | iex; Install-Project{{if .Version}} -version {{.Version}}{{end}}\"",
 		ExecuteCommand:   "C:/opscode/chef/bin/chef-solo.bat --no-color -c {{.ConfigPath}}",
 		createDirCommand: "cmd /c if not exist %q mkdir %q",
