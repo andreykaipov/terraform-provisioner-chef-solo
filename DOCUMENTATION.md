@@ -243,7 +243,24 @@ C:/opscode/chef/bin/chef-solo.bat --no-color -c {{.ConfigPath}}
 
 While you can change this command through the `execute_command` setting, the
 only template variable available to you here is "{{.ConfigPath}}" which will
-evaluate to the path of the "solo.rb" file.
+evaluate to the path of the "solo.rb" config file.
+
+This might be useful if you'd like to use `chef-client --local-mode` instead
+of `chef-solo`. This might be necessary if you'd like to use a configuration
+setting not supported by Chef Solo.
+
+```hcl
+resource "aws_instance" "web" {
+  # ...
+
+  provisioner "chef-solo" {
+    config_template = <<- EOF
+      # ...
+    EOF
+    execute_command = "chef-client -z -c {{.ConfigPath}}"
+  }
+}
+```
 
 ## Install Command
 

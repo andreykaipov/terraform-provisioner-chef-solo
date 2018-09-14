@@ -20,6 +20,10 @@ resource "aws_instance" "web" {
 }
 ```
 
+It's inspired by the similar [Packer provisioner for
+Chef Solo](https://www.packer.io/docs/provisioners/chef-solo.html), so if you're
+familiar with that one, then you'll be familiar with this one!
+
 ## Usage
 
 To use this provisioner, first download the zipped binary for your system from
